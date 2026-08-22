@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ponytail Pro Max — Golden Demo</title>
+  <link rel="stylesheet" href="../src/lib/style.css" />
+  <style>
+    body { max-width: 56rem; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
+    .hero { text-align: center; padding: 2.5rem 1rem; margin-bottom: 2rem; border: 1px solid var(--c-border); border-radius: var(--radius-lg); background: linear-gradient(180deg, var(--c-surface), var(--c-surface-alt)); }
+    .hero h1 { margin: 0; font-family: var(--font-display); font-size: clamp(2rem, 6vw, 3.25rem); }
+    .hero p { color: var(--c-text-soft); max-width: 34rem; margin: 0.75rem auto 0; }
+    .grid { display: grid; gap: 1.25rem; }
+    @media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
+    .card { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--radius); padding: 1.25rem; }
+    .card h2 { margin: 0 0 0.5rem; font-size: 1rem; }
+    .card p.muted { color: var(--c-text-soft); font-size: 0.85rem; margin-top: 0; }
+    .row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+    .stack { display: flex; flex-direction: column; gap: 0.5rem; }
+    .banner { color: #7a1f1a; background: #fdecea; border: 1px solid #f5c6c1; }
+    [data-live] { font-variant-numeric: tabular-nums; }
+    .list li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--c-border); }
+    .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: var(--radius-pill); font-size: 0.7rem; background: var(--c-primary-soft); color: var(--c-primary-hover); }
+    .star { color: var(--c-primary); letter-spacing: 1px; }
+    kbd { background: var(--c-surface-alt); border: 1px solid var(--c-border); border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.75em; }
+  </style>
+</head>
+<body>
+  <header aria-label="Demo header">
+    <section class="hero" aria-label="Introduction">
+      <h1>Ponytail Pro Max</h1>
+      <p>The golden kitchen-sink demo — every lib weapon working live on one page.</p>
+    </section>
+  </header>
+
+  <main aria-label="Demo content">
+    <div id="error-banner" class="banner" role="alert" hidden></div>
+
+    <div class="grid">
+      <section class="card" aria-label="Modal demo">
+        <h2>Modal + focus trap</h2>
+        <p class="muted">Tab stays inside; Escape closes; focus returns to the trigger.</p>
+        <button id="open-modal" class="btn btn--primary">Open modal</button>
+      </section>
+
+      <section class="card" aria-label="State demo">
+        <h2>createState (reactive)</h2>
+        <p class="muted">1KB reactive state — updates auto-render.</p>
+        <div class="row">
+          <button id="dec" class="btn btn--ghost">−</button>
+          <strong id="count" data-live>0</strong>
+          <button id="inc" class="btn btn--ghost">+</button>
+        </div>
+      </section>
+
+      <section class="card" aria-label="Store demo">
+        <h2>createStore (CRUD + persist)</h2>
+        <p class="muted">Error-safe localStorage; reload the page — items survive.</p>
+        <form id="add-form" aria-label="Add item" class="row">
+          <label class="sr-only" for="item-name">Item name</label>
+          <input id="item-name" type="text" placeholder="Grocery run" />
+          <button type="submit" class="btn btn--primary">Add</button>
+        </form>
+        <ul id="items" class="list" aria-label="Items"></ul>
+        <button id="seed" class="btn btn--ghost">Seed data</button>
+        <button id="clear" class="btn btn--danger">Clear</button>
+      </section>
+
+      <section class="card" aria-label="Render helpers demo">
+        <h2>Render helpers</h2>
+        <p class="muted">escapeHtml, formatDate, stars, debounce — live.</p>
+        <div class="stack">
+          <p><span class="badge">date</span> <span id="date"></span></p>
+          <p><span class="badge">stars</span> <span id="stars"></span></p>
+          <p><span class="badge">debounced input</span> <input id="debounce-input" type="text" placeholder="Type fast…" /> <span id="debounce-out" class="badge">—</span></p>
+          <p><span class="badge">safe html</span> <span id="safe"></span></p>
+        </div>
+      </section>
+
+      <section class="card" aria-label="Validators demo">
+        <h2>Validators</h2>
+        <p class="muted">isString, isOneOf, validateObject — composable checks.</p>
+        <p><span class="badge">result</span> <span id="validators"></span></p>
+      </section>
+
+      <section class="card" aria-label="i18n demo">
+        <h2>i18n (language switch)</h2>
+        <p class="muted">Persisted choice; safe fallback to the key.</p>
+        <div class="row">
+          <button id="lang-toggle" class="btn btn--ghost">Switch to BM</button>
+          <strong id="lang-out" class="badge">en</strong>
+        </div>
+        <p><span class="badge">translated</span> <span id="i18n-hello"></span></p>
+      </section>
+
+      <section class="card" aria-label="Announce demo">
+        <h2>Live region (announce)</h2>
+        <p class="muted">Screen readers hear this — <kbd>Tab</kbd> then <kbd>Enter</kbd>.</p>
+        <button id="announce-btn" class="btn btn--ghost">Announce</button>
+      </section>
+    </div>
+  </main>
+
+  <div id="modal" hidden aria-hidden="true">
+    <div class="modal-overlay" data-modal-overlay></div>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+      <h2 id="modal-title" style="margin:0 0 .5rem">Focus trapped here</h2>
+      <p style="margin:0 0 1rem">Tab cycles inside. Escape closes and restores focus.</p>
+      <button class="btn btn--primary" data-modal-close>Close</button>
+    </div>
+  </div>
+  <div id="live" class="sr-only" aria-live="polite"></div>
+
+  <script type="module" src="./main.ts"></script>
+</body>
+</html>

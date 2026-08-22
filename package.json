@@ -1,0 +1,41 @@
+{
+  "name": "yarn-stash-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Battle-tested template for code competitions: a11y, testing, error handling, modular architecture.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage --config vitest.coverage.config.ts",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:a11y": "vitest run --config vitest.a11y.config.ts",
+    "test:a11y:scan": "vitest run --config vitest.a11y-scan.config.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "size": "node scripts/sizecheck.mjs",
+    "verify": "node scripts/verify.mjs",
+    "init": "node scripts/init.mjs",
+    "brief": "node scripts/brief.mjs",
+    "scaffold": "node scripts/scaffold.mjs",
+    "seed": "node scripts/seed.mjs",
+    "audit": "node scripts/audit.mjs",
+    "deploy": "node scripts/deploy.mjs",
+    "demo": "vite demo",
+    "e2e": "node scripts/e2e.mjs",
+    "submit": "node scripts/submit.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.0",
+    "@vitest/coverage-v8": "^2.1.9",
+    "axe-core": "^4.13.0",
+    "jsdom": "^24.1.1",
+    "playwright": "^1.47.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.0",
+    "vitest": "^2.0.5"
+  }
+}

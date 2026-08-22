@@ -1,0 +1,23 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+# Opt-in: this job only runs when the NETLIFY_AUTH_TOKEN secret exists.
+# Set repo secrets: NETLIFY_AUTH_TOKEN (from netlify-cli login) and
+# NETLIFY_SITE_ID (from an existing site, or create one at app.netlify.com).
+jobs:
+  netlify:
+    if: ${{ vars.NETLIFY_ENABLED == 'true' && secrets.NETLIFY_AUTH_TOKEN != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx netlify-cli deploy --prod --dir=dist --auth "${{ secrets.NETLIFY_AUTH_TOKEN }}" --site "${{ secrets.NETLIFY_SITE_ID }}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

@@ -1,0 +1,27 @@
+name: lighthouse
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx vite preview --port 4173 &
+      - run: sleep 5
+      - run: npx lighthouse http://localhost:4173 --quiet --chrome-flags="--headless --no-sandbox" --output=json --output-path=lh.json --only-categories=performance,accessibility,best-practices,seo
+      - run: node scripts/lighthouse-gate.mjs lh.json performance=0.5 accessibility=0.9 best-practices=0.8 seo=0.8
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: lh.json
